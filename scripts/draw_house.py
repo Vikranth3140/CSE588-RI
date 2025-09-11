@@ -1,30 +1,41 @@
 #!/usr/bin/env python3
-import rospy
-from geometry_msgs.msg import Twist
-from turtlesim.srv import TeleportAbsolute, SetPen, Empty
-import time
 import math
+import rclpy
+from rclpy.node import Node
+from geometry_msgs.msg import Twist
+from turtlesim.srv import TeleportAbsolute, SetPen
+from std_srvs.srv import Empty
+import time
 
-class TurtleHouseDrawer:
+class TurtleHouseDrawer(Node):
     def __init__(self):
-        rospy.init_node("draw_house", anonymous=True)
-        self.pub = rospy.Publisher('/turtle1/cmd_vel', Twist, queue_size=10)
-        self.rate = rospy.Rate(50)  # control loop frequency
+        super().__init__("draw_house")
 
-        # Service clients
-        rospy.wait_for_service('/turtle1/teleport_absolute')
-        self.teleport_srv = rospy.ServiceProxy('/turtle1/teleport_absolute', TeleportAbsolute)
-        rospy.wait_for_service('/turtle1/set_pen')
-        self.setpen_srv = rospy.ServiceProxy('/turtle1/set_pen', SetPen)
-        rospy.wait_for_service('/reset')
-        self.reset_srv = rospy.ServiceProxy('/reset', Empty)
+        # Publisher for movement
+        self.pub = self.create_publisher(Twist, "/turtle1/cmd_vel", 10)
+        self.rate = self.create_rate(50)
 
+        # Create service clients
+        self.teleport_cli = self.create_client(TeleportAbsolute, "/turtle1/teleport_absolute")
+        self.setpen_cli = self.create_client(SetPen, "/turtle1/set_pen")
+        self.reset_cli = self.create_client(Empty, "/reset")
+
+        # Wait for services
+        for cli, name in [
+            (self.teleport_cli, "teleport_absolute"),
+            (self.setpen_cli, "set_pen"),
+            (self.reset_cli, "reset"),
+        ]:
+            while not cli.wait_for_service(timeout_sec=1.0):
+                self.get_logger().info(f"{name} service not available, waiting...")
+
+    # ---- Movement Primitives ----
     def move_straight(self, distance, speed=1.0):
         vel = Twist()
         vel.linear.x = speed
         duration = distance / speed
-        t0 = rospy.Time.now().to_sec()
-        while rospy.Time.now().to_sec() - t0 < duration:
+        t0 = self.get_clock().now().seconds_nanoseconds()[0]
+        while self.get_clock().now().seconds_nanoseconds()[0] - t0 < duration:
             self.pub.publish(vel)
             self.rate.sleep()
         vel.linear.x = 0
@@ -35,18 +46,36 @@ class TurtleHouseDrawer:
         angle_rad = math.radians(angle_deg)
         vel.angular.z = speed if angle_rad > 0 else -speed
         duration = abs(angle_rad) / speed
-        t0 = rospy.Time.now().to_sec()
-        while rospy.Time.now().to_sec() - t0 < duration:
+        t0 = self.get_clock().now().seconds_nanoseconds()[0]
+        while self.get_clock().now().seconds_nanoseconds()[0] - t0 < duration:
             self.pub.publish(vel)
             self.rate.sleep()
         vel.angular.z = 0
         self.pub.publish(vel)
 
     def teleport(self, x, y, theta=0.0):
-        self.setpen_srv(0, 0, 0, 0, 1)  # lift pen
-        self.teleport_srv(x, y, theta)
-        self.setpen_srv(255, 255, 255, 2, 0)  # put pen down
+        # Lift pen
+        pen_req = SetPen.Request()
+        pen_req.r = pen_req.g = pen_req.b = 0
+        pen_req.width = 0
+        pen_req.off = 1
+        self.setpen_cli.call_async(pen_req)
 
+        # Teleport
+        req = TeleportAbsolute.Request()
+        req.x, req.y, req.theta = x, y, theta
+        self.teleport_cli.call_async(req)
+
+        # Put pen down
+        pen_req = SetPen.Request()
+        pen_req.r = pen_req.g = pen_req.b = 255
+        pen_req.width = 2
+        pen_req.off = 0
+        self.setpen_cli.call_async(pen_req)
+
+        time.sleep(0.1)  # let teleport finish
+
+    # ---- Shape Drawing ----
     def draw_rectangle(self, x, y, width, height):
         self.teleport(x, y, 0)
         for _ in range(2):
@@ -78,14 +107,27 @@ class TurtleHouseDrawer:
         # Door
         self.draw_rectangle(x+4.0, y, 1.0, 2.5)
 
-if __name__ == "__main__":
+    def reset_screen(self):
+        req = Empty.Request()
+        self.reset_cli.call_async(req)
+        time.sleep(0.5)
+
+def main(args=None):
+    rclpy.init(args=args)
     drawer = TurtleHouseDrawer()
 
-    # Read coordinates from file
+    # Read coordinates from input file
     with open("assignment1Input.txt") as f:
         coords = [tuple(map(float, line.split())) for line in f]
 
     for (x, y) in coords:
+        drawer.get_logger().info(f"Drawing house at ({x}, {y})...")
         drawer.draw_house(x, y)
-        input("✅ House drawn at ({}, {}). Press Enter to continue...".format(x, y))
-        drawer.reset_srv()
+        input("✅ House drawn. Press Enter to continue...")
+        drawer.reset_screen()
+
+    drawer.destroy_node()
+    rclpy.shutdown()
+
+if __name__ == "__main__":
+    main()
