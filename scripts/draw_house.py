@@ -31,7 +31,6 @@ class TurtleHouseDrawer(Node):
 
     # ---- Movement Primitives ----
     def move_straight(self, distance, speed=1.0):
-        self.get_logger().info(f"Moving straight: distance={distance}, speed={speed}")
         vel = Twist()
         vel.linear.x = speed
         duration = distance / speed
@@ -40,13 +39,11 @@ class TurtleHouseDrawer(Node):
         while time.time() - start_time < duration:
             self.pub.publish(vel)
             time.sleep(0.02)  # 50Hz update rate
-            
+        
         vel.linear.x = 0.0
         self.pub.publish(vel)
-        self.get_logger().info(f"Finished moving straight")
 
     def rotate(self, angle_deg, speed=1.0):
-        self.get_logger().info(f"Rotating: angle={angle_deg} degrees, speed={speed}")
         vel = Twist()
         angle_rad = math.radians(angle_deg)
         vel.angular.z = speed if angle_rad > 0 else -speed
@@ -56,14 +53,11 @@ class TurtleHouseDrawer(Node):
         while time.time() - start_time < duration:
             self.pub.publish(vel)
             time.sleep(0.02)  # 50Hz update rate
-            
+        
         vel.angular.z = 0.0
         self.pub.publish(vel)
-        self.get_logger().info(f"Finished rotating")
 
     def teleport(self, x, y, theta=0.0):
-        self.get_logger().info(f"Teleporting to ({x}, {y}, {theta})")
-        
         # Lift pen
         pen_req = SetPen.Request()
         pen_req.r = pen_req.g = pen_req.b = 0
@@ -94,8 +88,6 @@ class TurtleHouseDrawer(Node):
         if not future.done():
             self.get_logger().warn("Set pen (down) service call timed out")
             return
-            
-        self.get_logger().info("Teleport completed successfully")
 
     # ---- Shape Drawing ----
     def draw_rectangle(self, x, y, width, height):
@@ -110,24 +102,29 @@ class TurtleHouseDrawer(Node):
         self.teleport(x, y, 0.0)
         # base
         self.move_straight(width)
-        # left roof side
-        self.rotate(150)
+        # Calculate the angle for the roof sides
+        # For an isosceles triangle, the angle from horizontal to the slant
+        angle_to_peak = math.degrees(math.atan(height / (width/2)))
         slant = math.sqrt((width/2)**2 + height**2)
+        
+        # left roof side (turn left from horizontal)
+        self.rotate(180 - angle_to_peak)
         self.move_straight(slant)
-        # right roof side
-        self.rotate(60)
+        # right roof side (turn right to go down)
+        self.rotate(2 * angle_to_peak - 180)
         self.move_straight(slant)
-        self.rotate(150)
+        # return to original orientation
+        self.rotate(180 - angle_to_peak)
 
     def draw_house(self, x, y):
-        # Main wall
-        self.draw_rectangle(x, y, 5.0, 4.5)
-        # Roof
-        self.draw_triangle(x, y+4.5, 5.0, 4.0)
-        # Window
-        self.draw_rectangle(x+0.5, y+2.0, 1.0, 1.0)
-        # Door
-        self.draw_rectangle(x+4.0, y, 1.0, 2.5)
+        # Main wall (scaled down to 1.5x1.0 to fit in window)
+        self.draw_rectangle(x, y, 1.5, 1.0)
+        # Roof (same width as house, positioned at top of house)
+        self.draw_triangle(x, y+1.0, 1.5, 0.8)
+        # Window (scaled down to 0.3x0.3)
+        self.draw_rectangle(x+0.1, y+0.5, 0.3, 0.3)
+        # Door (scaled down to 0.3x0.6)
+        self.draw_rectangle(x+1.1, y, 0.3, 0.6)
 
     def reset_screen(self):
         req = Empty.Request()
