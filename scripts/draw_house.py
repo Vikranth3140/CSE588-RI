@@ -100,21 +100,25 @@ class TurtleHouseDrawer(Node):
 
     def draw_triangle(self, x, y, width, height):
         self.teleport(x, y, 0.0)
-        # base
+        # Draw base from left to right
         self.move_straight(width)
-        # Calculate the angle for the roof sides
-        # For an isosceles triangle, the angle from horizontal to the slant
-        angle_to_peak = math.degrees(math.atan(height / (width/2)))
-        slant = math.sqrt((width/2)**2 + height**2)
         
-        # left roof side (turn left from horizontal)
+        # Now at right corner, turn to go to peak
+        # Calculate the angle to turn left to reach the peak
+        half_width = width / 2
+        angle_to_peak = math.degrees(math.atan2(height, half_width))
+        
+        # Turn left by (180 - angle_to_peak) to face the peak
         self.rotate(180 - angle_to_peak)
-        self.move_straight(slant)
-        # right roof side (turn right to go down)
-        self.rotate(2 * angle_to_peak - 180)
-        self.move_straight(slant)
-        # return to original orientation
-        self.rotate(180 - angle_to_peak)
+        
+        # Calculate distance to peak
+        slant_length = math.sqrt(half_width**2 + height**2)
+        self.move_straight(slant_length)
+        
+        # Now at peak, turn to go to left corner
+        # Turn left by (2 * angle_to_peak) to face left corner
+        self.rotate(2 * angle_to_peak)
+        self.move_straight(slant_length)
 
     def draw_house(self, x, y):
         # Main wall (scaled down to 1.5x1.0 to fit in window)
