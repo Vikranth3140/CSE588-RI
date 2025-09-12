@@ -77,7 +77,7 @@ class TurtleHouseDrawer(Node):
 
     # ---- Shape Drawing ----
     def draw_rectangle(self, x, y, width, height):
-        self.teleport(x, y, 0)
+        self.teleport(x, y, 0.0)
         for _ in range(2):
             self.move_straight(width)
             self.rotate(90)
@@ -85,7 +85,7 @@ class TurtleHouseDrawer(Node):
             self.rotate(90)
 
     def draw_triangle(self, x, y, width, height):
-        self.teleport(x, y, 0)
+        self.teleport(x, y, 0.0)
         # base
         self.move_straight(width)
         # left roof side
@@ -117,7 +117,7 @@ def main(args=None):
     drawer = TurtleHouseDrawer()
 
     # Read coordinates from input file
-    with open("assignment1Input.txt") as f:
+    with open("/home/vikranth/ros2_ws/src/house_drawer/assignment1Input.txt") as f:
         coords = [tuple(map(float, line.split())) for line in f]
 
     for (x, y) in coords:
