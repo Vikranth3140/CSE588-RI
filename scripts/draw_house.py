@@ -10,6 +10,7 @@ import time
 class TurtleHouseDrawer(Node):
     def __init__(self):
         super().__init__("draw_house")
+        self.current_orientation_rad = 0.0
 
         # Publisher for movement
         self.pub = self.create_publisher(Twist, "/turtle1/cmd_vel", 10)
@@ -56,18 +57,38 @@ class TurtleHouseDrawer(Node):
         
         vel.angular.z = 0.0
         self.pub.publish(vel)
+        self.current_orientation_rad += angle_rad
 
-    def teleport(self, x, y, theta=0.0):
-        # Lift pen
+    def set_pen(self, on, r=255, g=255, b=255, width=2):
         pen_req = SetPen.Request()
-        pen_req.r = pen_req.g = 0
-        pen_req.width = 0
-        pen_req.off = 1
+        if on:
+            pen_req.r, pen_req.g, pen_req.b, pen_req.width, pen_req.off = r, g, b, width, 0
+        else:
+            pen_req.r, pen_req.g, pen_req.b, pen_req.width, pen_req.off = 0, 0, 0, 0, 1
+        
         future = self.setpen_cli.call_async(pen_req)
         rclpy.spin_until_future_complete(self, future, timeout_sec=5.0)
         if not future.done():
-            self.get_logger().warn("Set pen (lift) service call timed out")
+            self.get_logger().warn("Set pen service call timed out")
+
+    def move_to(self, x, y):
+        self.set_pen(False) # Pen up
+
+        # Use teleport for repositioning without drawing
+        req = TeleportAbsolute.Request()
+        req.x, req.y, req.theta = float(x), float(y), 0.0
+        future = self.teleport_cli.call_async(req)
+        rclpy.spin_until_future_complete(self, future, timeout_sec=5.0)
+        if not future.done():
+            self.get_logger().warn("Teleport service call timed out")
             return
+        self.current_orientation_rad = 0.0
+
+        self.set_pen(True) # Pen down
+
+    def teleport(self, x, y, theta=0.0):
+        # Lift pen
+        self.set_pen(False)
 
         # Teleport
         req = TeleportAbsolute.Request()
@@ -77,21 +98,14 @@ class TurtleHouseDrawer(Node):
         if not future.done():
             self.get_logger().warn("Teleport service call timed out")
             return
+        self.current_orientation_rad = theta
 
         # Put pen down
-        pen_req = SetPen.Request()
-        pen_req.r = pen_req.g = pen_req.b = 255
-        pen_req.width = 2
-        pen_req.off = 0
-        future = self.setpen_cli.call_async(pen_req)
-        rclpy.spin_until_future_complete(self, future, timeout_sec=5.0)
-        if not future.done():
-            self.get_logger().warn("Set pen (down) service call timed out")
-            return
+        self.set_pen(True)
 
     # ---- Shape Drawing ----
     def draw_rectangle(self, x, y, width, height):
-        self.teleport(x, y, 0.0)
+        self.move_to(x, y)
         for _ in range(2):
             self.move_straight(width)
             self.rotate(90)
@@ -99,26 +113,30 @@ class TurtleHouseDrawer(Node):
             self.rotate(90)
 
     def draw_triangle(self, x, y, width, height):
-        self.teleport(x, y, 0.0)
-        # Draw base from left to right
-        self.move_straight(width)
+        # This function is now only used for the roof.
+        # The base of the roof is the top of the wall, which is already drawn.
+        # We start at the top-left of the wall, go to the peak, then to the top-right.
+        self.move_to(x, y)
+
+        # Go to the peak
+        peak_x = x + width / 2
+        peak_y = y + height
+        angle_to_peak = math.atan2(peak_y - y, peak_x - x)
+        dist_to_peak = math.sqrt((peak_x - x)**2 + (peak_y - y)**2)
         
-        # Now at right corner, turn to go to peak
-        # Calculate the angle to turn left to reach the peak
-        half_width = width / 2
-        angle_to_peak = math.degrees(math.atan2(height, half_width))
-        
-        # Turn left by (180 - angle_to_peak) to face the peak
-        self.rotate(180 - angle_to_peak)
-        
-        # Calculate distance to peak
-        slant_length = math.sqrt(half_width**2 + height**2)
-        self.move_straight(slant_length)
-        
-        # Now at peak, turn to go to left corner
-        # Turn left by (2 * angle_to_peak) to face left corner
-        self.rotate(2 * angle_to_peak)
-        self.move_straight(slant_length)
+        rotation_angle = angle_to_peak - self.current_orientation_rad
+        self.rotate(math.degrees(rotation_angle))
+        self.move_straight(dist_to_peak)
+
+        # Go to the top-right corner
+        top_right_x = x + width
+        top_right_y = y
+        angle_to_right = math.atan2(top_right_y - peak_y, top_right_x - peak_x)
+        dist_to_right = math.sqrt((top_right_x - peak_x)**2 + (top_right_y - peak_y)**2)
+
+        rotation_angle = angle_to_right - self.current_orientation_rad
+        self.rotate(math.degrees(rotation_angle))
+        self.move_straight(dist_to_right)
 
     def draw_house(self, x, y):
         # Wall
