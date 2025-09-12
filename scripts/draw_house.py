@@ -60,7 +60,7 @@ class TurtleHouseDrawer(Node):
     def teleport(self, x, y, theta=0.0):
         # Lift pen
         pen_req = SetPen.Request()
-        pen_req.r = pen_req.g = pen_req.b = 0
+        pen_req.r = pen_req.g = 0
         pen_req.width = 0
         pen_req.off = 1
         future = self.setpen_cli.call_async(pen_req)
@@ -121,14 +121,28 @@ class TurtleHouseDrawer(Node):
         self.move_straight(slant_length)
 
     def draw_house(self, x, y):
-        # Main wall (scaled down to 1.5x1.0 to fit in window)
-        self.draw_rectangle(x, y, 1.5, 1.0)
-        # Roof (same width as house, positioned at top of house)
-        self.draw_triangle(x, y+1.0, 1.5, 0.8)
-        # Window (scaled down to 0.3x0.3)
-        self.draw_rectangle(x+0.1, y+0.5, 0.3, 0.3)
-        # Door (scaled down to 0.3x0.6)
-        self.draw_rectangle(x+1.1, y, 0.3, 0.6)
+        # Wall
+        wall_width = 5.0
+        wall_height = 4.5
+        self.draw_rectangle(x, y, wall_width, wall_height)
+
+        # Roof
+        roof_base = 5.0
+        roof_height = 4.0
+        self.draw_triangle(x, y + wall_height, roof_base, roof_height)
+
+        # Window
+        window_size = 1.0
+        window_offset_left = 0.5
+        window_offset_bottom = 2.0
+        self.draw_rectangle(x + window_offset_left, y + window_offset_bottom, window_size, window_size)
+
+        # Door
+        door_width = 1.0
+        door_height = 2.5
+        door_offset_right = 1.0
+        door_x = x + wall_width - door_offset_right - door_width
+        self.draw_rectangle(door_x, y, door_width, door_height)
 
     def reset_screen(self):
         req = Empty.Request()
