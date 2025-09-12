@@ -31,49 +31,71 @@ class TurtleHouseDrawer(Node):
 
     # ---- Movement Primitives ----
     def move_straight(self, distance, speed=1.0):
+        self.get_logger().info(f"Moving straight: distance={distance}, speed={speed}")
         vel = Twist()
         vel.linear.x = speed
         duration = distance / speed
-        t0 = self.get_clock().now().seconds_nanoseconds()[0]
-        while self.get_clock().now().seconds_nanoseconds()[0] - t0 < duration:
+        
+        start_time = time.time()
+        while time.time() - start_time < duration:
             self.pub.publish(vel)
-            self.rate.sleep()
-        vel.linear.x = 0
+            time.sleep(0.02)  # 50Hz update rate
+            
+        vel.linear.x = 0.0
         self.pub.publish(vel)
+        self.get_logger().info(f"Finished moving straight")
 
     def rotate(self, angle_deg, speed=1.0):
+        self.get_logger().info(f"Rotating: angle={angle_deg} degrees, speed={speed}")
         vel = Twist()
         angle_rad = math.radians(angle_deg)
         vel.angular.z = speed if angle_rad > 0 else -speed
         duration = abs(angle_rad) / speed
-        t0 = self.get_clock().now().seconds_nanoseconds()[0]
-        while self.get_clock().now().seconds_nanoseconds()[0] - t0 < duration:
+        
+        start_time = time.time()
+        while time.time() - start_time < duration:
             self.pub.publish(vel)
-            self.rate.sleep()
-        vel.angular.z = 0
+            time.sleep(0.02)  # 50Hz update rate
+            
+        vel.angular.z = 0.0
         self.pub.publish(vel)
+        self.get_logger().info(f"Finished rotating")
 
     def teleport(self, x, y, theta=0.0):
+        self.get_logger().info(f"Teleporting to ({x}, {y}, {theta})")
+        
         # Lift pen
         pen_req = SetPen.Request()
         pen_req.r = pen_req.g = pen_req.b = 0
         pen_req.width = 0
         pen_req.off = 1
-        self.setpen_cli.call_async(pen_req)
+        future = self.setpen_cli.call_async(pen_req)
+        rclpy.spin_until_future_complete(self, future, timeout_sec=5.0)
+        if not future.done():
+            self.get_logger().warn("Set pen (lift) service call timed out")
+            return
 
         # Teleport
         req = TeleportAbsolute.Request()
-        req.x, req.y, req.theta = x, y, theta
-        self.teleport_cli.call_async(req)
+        req.x, req.y, req.theta = float(x), float(y), float(theta)
+        future = self.teleport_cli.call_async(req)
+        rclpy.spin_until_future_complete(self, future, timeout_sec=5.0)
+        if not future.done():
+            self.get_logger().warn("Teleport service call timed out")
+            return
 
         # Put pen down
         pen_req = SetPen.Request()
         pen_req.r = pen_req.g = pen_req.b = 255
         pen_req.width = 2
         pen_req.off = 0
-        self.setpen_cli.call_async(pen_req)
-
-        time.sleep(0.1)  # let teleport finish
+        future = self.setpen_cli.call_async(pen_req)
+        rclpy.spin_until_future_complete(self, future, timeout_sec=5.0)
+        if not future.done():
+            self.get_logger().warn("Set pen (down) service call timed out")
+            return
+            
+        self.get_logger().info("Teleport completed successfully")
 
     # ---- Shape Drawing ----
     def draw_rectangle(self, x, y, width, height):
@@ -109,7 +131,8 @@ class TurtleHouseDrawer(Node):
 
     def reset_screen(self):
         req = Empty.Request()
-        self.reset_cli.call_async(req)
+        future = self.reset_cli.call_async(req)
+        rclpy.spin_until_future_complete(self, future)
         time.sleep(0.5)
 
 def main(args=None):
