@@ -113,7 +113,7 @@ class TurtleHouseDrawer(Node):
             self.rotate(90)
 
     def draw_triangle(self, x, y, width, height):
-        # This function is now only used for the roof.
+        # Since I was getting double lines while drawing triangle roof, I do this for roof only.
         # The base of the roof is the top of the wall, which is already drawn.
         # We start at the top-left of the wall, go to the peak, then to the top-right.
         self.move_to(x, y)
@@ -179,7 +179,7 @@ def main(args=None):
     for (x, y) in coords:
         drawer.get_logger().info(f"Drawing house at ({x}, {y})...")
         drawer.draw_house(x, y)
-        input("✅ House drawn. Press Enter to continue...")
+        input("The house is drawn. Press Enter to draw the next house/exit.")
         drawer.reset_screen()
 
     drawer.destroy_node()
