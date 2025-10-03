@@ -1,0 +1,5 @@
+[console_scripts]
+hybrid_nav = vikranth_gazebo.hybrid_nav:main
+reactive_nav = vikranth_gazebo.reactive_nav:main
+spa_nav = vikranth_gazebo.spa_nav:main
+

@@ -1,0 +1,49 @@
+[0.843s] Invoking command in '/home/vikranth/turtlebot3_ws/src/vikranth_gazebo': PYTHONPATH=/home/vikranth/turtlebot3_ws/src/vikranth_gazebo/build/vikranth_gazebo/prefix_override:/usr/lib/python3/dist-packages/colcon_core/task/python/colcon_distutils_commands:/home/vikranth/turtlebot3_ws/src/vikranth_gazebo/install/vikranth_gazebo/lib/python3.10/site-packages:${PYTHONPATH} /usr/bin/python3 -W ignore:setup.py install is deprecated -W ignore:easy_install command is deprecated setup.py egg_info --egg-base build/vikranth_gazebo build --build-base /home/vikranth/turtlebot3_ws/src/vikranth_gazebo/build/vikranth_gazebo/build install --record /home/vikranth/turtlebot3_ws/src/vikranth_gazebo/build/vikranth_gazebo/install.log --single-version-externally-managed install_data
+[1.153s] running egg_info
+[1.154s] creating build/vikranth_gazebo/vikranth_gazebo.egg-info
+[1.154s] writing build/vikranth_gazebo/vikranth_gazebo.egg-info/PKG-INFO
+[1.155s] writing dependency_links to build/vikranth_gazebo/vikranth_gazebo.egg-info/dependency_links.txt
+[1.155s] writing entry points to build/vikranth_gazebo/vikranth_gazebo.egg-info/entry_points.txt
+[1.155s] writing requirements to build/vikranth_gazebo/vikranth_gazebo.egg-info/requires.txt
+[1.156s] writing top-level names to build/vikranth_gazebo/vikranth_gazebo.egg-info/top_level.txt
+[1.156s] writing manifest file 'build/vikranth_gazebo/vikranth_gazebo.egg-info/SOURCES.txt'
+[1.159s] reading manifest file 'build/vikranth_gazebo/vikranth_gazebo.egg-info/SOURCES.txt'
+[1.160s] writing manifest file 'build/vikranth_gazebo/vikranth_gazebo.egg-info/SOURCES.txt'
+[1.160s] running build
+[1.160s] running build_py
+[1.161s] creating /home/vikranth/turtlebot3_ws/src/vikranth_gazebo/build/vikranth_gazebo/build
+[1.161s] creating /home/vikranth/turtlebot3_ws/src/vikranth_gazebo/build/vikranth_gazebo/build/lib
+[1.161s] creating /home/vikranth/turtlebot3_ws/src/vikranth_gazebo/build/vikranth_gazebo/build/lib/vikranth_gazebo
+[1.161s] copying vikranth_gazebo/hybrid_nav.py -> /home/vikranth/turtlebot3_ws/src/vikranth_gazebo/build/vikranth_gazebo/build/lib/vikranth_gazebo
+[1.162s] copying vikranth_gazebo/reactive_nav.py -> /home/vikranth/turtlebot3_ws/src/vikranth_gazebo/build/vikranth_gazebo/build/lib/vikranth_gazebo
+[1.162s] copying vikranth_gazebo/__init__.py -> /home/vikranth/turtlebot3_ws/src/vikranth_gazebo/build/vikranth_gazebo/build/lib/vikranth_gazebo
+[1.162s] copying vikranth_gazebo/spa_nav.py -> /home/vikranth/turtlebot3_ws/src/vikranth_gazebo/build/vikranth_gazebo/build/lib/vikranth_gazebo
+[1.162s] running install
+[1.163s] running install_lib
+[1.164s] creating /home/vikranth/turtlebot3_ws/src/vikranth_gazebo/install/vikranth_gazebo/lib/python3.10/site-packages/vikranth_gazebo
+[1.164s] copying /home/vikranth/turtlebot3_ws/src/vikranth_gazebo/build/vikranth_gazebo/build/lib/vikranth_gazebo/hybrid_nav.py -> /home/vikranth/turtlebot3_ws/src/vikranth_gazebo/install/vikranth_gazebo/lib/python3.10/site-packages/vikranth_gazebo
+[1.164s] copying /home/vikranth/turtlebot3_ws/src/vikranth_gazebo/build/vikranth_gazebo/build/lib/vikranth_gazebo/reactive_nav.py -> /home/vikranth/turtlebot3_ws/src/vikranth_gazebo/install/vikranth_gazebo/lib/python3.10/site-packages/vikranth_gazebo
+[1.165s] copying /home/vikranth/turtlebot3_ws/src/vikranth_gazebo/build/vikranth_gazebo/build/lib/vikranth_gazebo/__init__.py -> /home/vikranth/turtlebot3_ws/src/vikranth_gazebo/install/vikranth_gazebo/lib/python3.10/site-packages/vikranth_gazebo
+[1.165s] copying /home/vikranth/turtlebot3_ws/src/vikranth_gazebo/build/vikranth_gazebo/build/lib/vikranth_gazebo/spa_nav.py -> /home/vikranth/turtlebot3_ws/src/vikranth_gazebo/install/vikranth_gazebo/lib/python3.10/site-packages/vikranth_gazebo
+[1.165s] byte-compiling /home/vikranth/turtlebot3_ws/src/vikranth_gazebo/install/vikranth_gazebo/lib/python3.10/site-packages/vikranth_gazebo/hybrid_nav.py to hybrid_nav.cpython-310.pyc
+[1.167s] byte-compiling /home/vikranth/turtlebot3_ws/src/vikranth_gazebo/install/vikranth_gazebo/lib/python3.10/site-packages/vikranth_gazebo/reactive_nav.py to reactive_nav.cpython-310.pyc
+[1.168s] byte-compiling /home/vikranth/turtlebot3_ws/src/vikranth_gazebo/install/vikranth_gazebo/lib/python3.10/site-packages/vikranth_gazebo/__init__.py to __init__.cpython-310.pyc
+[1.168s] byte-compiling /home/vikranth/turtlebot3_ws/src/vikranth_gazebo/install/vikranth_gazebo/lib/python3.10/site-packages/vikranth_gazebo/spa_nav.py to spa_nav.cpython-310.pyc
+[1.169s] running install_data
+[1.169s] creating /home/vikranth/turtlebot3_ws/src/vikranth_gazebo/install/vikranth_gazebo/share/ament_index
+[1.170s] creating /home/vikranth/turtlebot3_ws/src/vikranth_gazebo/install/vikranth_gazebo/share/ament_index/resource_index
+[1.170s] creating /home/vikranth/turtlebot3_ws/src/vikranth_gazebo/install/vikranth_gazebo/share/ament_index/resource_index/packages
+[1.170s] copying resource/vikranth_gazebo -> /home/vikranth/turtlebot3_ws/src/vikranth_gazebo/install/vikranth_gazebo/share/ament_index/resource_index/packages
+[1.171s] copying package.xml -> /home/vikranth/turtlebot3_ws/src/vikranth_gazebo/install/vikranth_gazebo/share/vikranth_gazebo
+[1.171s] creating /home/vikranth/turtlebot3_ws/src/vikranth_gazebo/install/vikranth_gazebo/share/vikranth_gazebo/launch
+[1.171s] copying launch/reactive_nav.launch.py -> /home/vikranth/turtlebot3_ws/src/vikranth_gazebo/install/vikranth_gazebo/share/vikranth_gazebo/launch
+[1.171s] copying launch/spa_nav.launch.py -> /home/vikranth/turtlebot3_ws/src/vikranth_gazebo/install/vikranth_gazebo/share/vikranth_gazebo/launch
+[1.171s] copying launch/hybrid_nav.launch.py -> /home/vikranth/turtlebot3_ws/src/vikranth_gazebo/install/vikranth_gazebo/share/vikranth_gazebo/launch
+[1.171s] running install_egg_info
+[1.173s] Copying build/vikranth_gazebo/vikranth_gazebo.egg-info to /home/vikranth/turtlebot3_ws/src/vikranth_gazebo/install/vikranth_gazebo/lib/python3.10/site-packages/vikranth_gazebo-0.0.0-py3.10.egg-info
+[1.174s] running install_scripts
+[1.198s] Installing hybrid_nav script to /home/vikranth/turtlebot3_ws/src/vikranth_gazebo/install/vikranth_gazebo/lib/vikranth_gazebo
+[1.198s] Installing reactive_nav script to /home/vikranth/turtlebot3_ws/src/vikranth_gazebo/install/vikranth_gazebo/lib/vikranth_gazebo
+[1.198s] Installing spa_nav script to /home/vikranth/turtlebot3_ws/src/vikranth_gazebo/install/vikranth_gazebo/lib/vikranth_gazebo
+[1.199s] writing list of installed files to '/home/vikranth/turtlebot3_ws/src/vikranth_gazebo/build/vikranth_gazebo/install.log'
+[1.221s] Invoked command in '/home/vikranth/turtlebot3_ws/src/vikranth_gazebo' returned '0': PYTHONPATH=/home/vikranth/turtlebot3_ws/src/vikranth_gazebo/build/vikranth_gazebo/prefix_override:/usr/lib/python3/dist-packages/colcon_core/task/python/colcon_distutils_commands:/home/vikranth/turtlebot3_ws/src/vikranth_gazebo/install/vikranth_gazebo/lib/python3.10/site-packages:${PYTHONPATH} /usr/bin/python3 -W ignore:setup.py install is deprecated -W ignore:easy_install command is deprecated setup.py egg_info --egg-base build/vikranth_gazebo build --build-base /home/vikranth/turtlebot3_ws/src/vikranth_gazebo/build/vikranth_gazebo/build install --record /home/vikranth/turtlebot3_ws/src/vikranth_gazebo/build/vikranth_gazebo/install.log --single-version-externally-managed install_data

@@ -1,0 +1,47 @@
+running egg_info
+creating build/vikranth_gazebo/vikranth_gazebo.egg-info
+writing build/vikranth_gazebo/vikranth_gazebo.egg-info/PKG-INFO
+writing dependency_links to build/vikranth_gazebo/vikranth_gazebo.egg-info/dependency_links.txt
+writing entry points to build/vikranth_gazebo/vikranth_gazebo.egg-info/entry_points.txt
+writing requirements to build/vikranth_gazebo/vikranth_gazebo.egg-info/requires.txt
+writing top-level names to build/vikranth_gazebo/vikranth_gazebo.egg-info/top_level.txt
+writing manifest file 'build/vikranth_gazebo/vikranth_gazebo.egg-info/SOURCES.txt'
+reading manifest file 'build/vikranth_gazebo/vikranth_gazebo.egg-info/SOURCES.txt'
+writing manifest file 'build/vikranth_gazebo/vikranth_gazebo.egg-info/SOURCES.txt'
+running build
+running build_py
+creating /home/vikranth/turtlebot3_ws/src/vikranth_gazebo/build/vikranth_gazebo/build
+creating /home/vikranth/turtlebot3_ws/src/vikranth_gazebo/build/vikranth_gazebo/build/lib
+creating /home/vikranth/turtlebot3_ws/src/vikranth_gazebo/build/vikranth_gazebo/build/lib/vikranth_gazebo
+copying vikranth_gazebo/hybrid_nav.py -> /home/vikranth/turtlebot3_ws/src/vikranth_gazebo/build/vikranth_gazebo/build/lib/vikranth_gazebo
+copying vikranth_gazebo/reactive_nav.py -> /home/vikranth/turtlebot3_ws/src/vikranth_gazebo/build/vikranth_gazebo/build/lib/vikranth_gazebo
+copying vikranth_gazebo/__init__.py -> /home/vikranth/turtlebot3_ws/src/vikranth_gazebo/build/vikranth_gazebo/build/lib/vikranth_gazebo
+copying vikranth_gazebo/spa_nav.py -> /home/vikranth/turtlebot3_ws/src/vikranth_gazebo/build/vikranth_gazebo/build/lib/vikranth_gazebo
+running install
+running install_lib
+creating /home/vikranth/turtlebot3_ws/src/vikranth_gazebo/install/vikranth_gazebo/lib/python3.10/site-packages/vikranth_gazebo
+copying /home/vikranth/turtlebot3_ws/src/vikranth_gazebo/build/vikranth_gazebo/build/lib/vikranth_gazebo/hybrid_nav.py -> /home/vikranth/turtlebot3_ws/src/vikranth_gazebo/install/vikranth_gazebo/lib/python3.10/site-packages/vikranth_gazebo
+copying /home/vikranth/turtlebot3_ws/src/vikranth_gazebo/build/vikranth_gazebo/build/lib/vikranth_gazebo/reactive_nav.py -> /home/vikranth/turtlebot3_ws/src/vikranth_gazebo/install/vikranth_gazebo/lib/python3.10/site-packages/vikranth_gazebo
+copying /home/vikranth/turtlebot3_ws/src/vikranth_gazebo/build/vikranth_gazebo/build/lib/vikranth_gazebo/__init__.py -> /home/vikranth/turtlebot3_ws/src/vikranth_gazebo/install/vikranth_gazebo/lib/python3.10/site-packages/vikranth_gazebo
+copying /home/vikranth/turtlebot3_ws/src/vikranth_gazebo/build/vikranth_gazebo/build/lib/vikranth_gazebo/spa_nav.py -> /home/vikranth/turtlebot3_ws/src/vikranth_gazebo/install/vikranth_gazebo/lib/python3.10/site-packages/vikranth_gazebo
+byte-compiling /home/vikranth/turtlebot3_ws/src/vikranth_gazebo/install/vikranth_gazebo/lib/python3.10/site-packages/vikranth_gazebo/hybrid_nav.py to hybrid_nav.cpython-310.pyc
+byte-compiling /home/vikranth/turtlebot3_ws/src/vikranth_gazebo/install/vikranth_gazebo/lib/python3.10/site-packages/vikranth_gazebo/reactive_nav.py to reactive_nav.cpython-310.pyc
+byte-compiling /home/vikranth/turtlebot3_ws/src/vikranth_gazebo/install/vikranth_gazebo/lib/python3.10/site-packages/vikranth_gazebo/__init__.py to __init__.cpython-310.pyc
+byte-compiling /home/vikranth/turtlebot3_ws/src/vikranth_gazebo/install/vikranth_gazebo/lib/python3.10/site-packages/vikranth_gazebo/spa_nav.py to spa_nav.cpython-310.pyc
+running install_data
+creating /home/vikranth/turtlebot3_ws/src/vikranth_gazebo/install/vikranth_gazebo/share/ament_index
+creating /home/vikranth/turtlebot3_ws/src/vikranth_gazebo/install/vikranth_gazebo/share/ament_index/resource_index
+creating /home/vikranth/turtlebot3_ws/src/vikranth_gazebo/install/vikranth_gazebo/share/ament_index/resource_index/packages
+copying resource/vikranth_gazebo -> /home/vikranth/turtlebot3_ws/src/vikranth_gazebo/install/vikranth_gazebo/share/ament_index/resource_index/packages
+copying package.xml -> /home/vikranth/turtlebot3_ws/src/vikranth_gazebo/install/vikranth_gazebo/share/vikranth_gazebo
+creating /home/vikranth/turtlebot3_ws/src/vikranth_gazebo/install/vikranth_gazebo/share/vikranth_gazebo/launch
+copying launch/reactive_nav.launch.py -> /home/vikranth/turtlebot3_ws/src/vikranth_gazebo/install/vikranth_gazebo/share/vikranth_gazebo/launch
+copying launch/spa_nav.launch.py -> /home/vikranth/turtlebot3_ws/src/vikranth_gazebo/install/vikranth_gazebo/share/vikranth_gazebo/launch
+copying launch/hybrid_nav.launch.py -> /home/vikranth/turtlebot3_ws/src/vikranth_gazebo/install/vikranth_gazebo/share/vikranth_gazebo/launch
+running install_egg_info
+Copying build/vikranth_gazebo/vikranth_gazebo.egg-info to /home/vikranth/turtlebot3_ws/src/vikranth_gazebo/install/vikranth_gazebo/lib/python3.10/site-packages/vikranth_gazebo-0.0.0-py3.10.egg-info
+running install_scripts
+Installing hybrid_nav script to /home/vikranth/turtlebot3_ws/src/vikranth_gazebo/install/vikranth_gazebo/lib/vikranth_gazebo
+Installing reactive_nav script to /home/vikranth/turtlebot3_ws/src/vikranth_gazebo/install/vikranth_gazebo/lib/vikranth_gazebo
+Installing spa_nav script to /home/vikranth/turtlebot3_ws/src/vikranth_gazebo/install/vikranth_gazebo/lib/vikranth_gazebo
+writing list of installed files to '/home/vikranth/turtlebot3_ws/src/vikranth_gazebo/build/vikranth_gazebo/install.log'

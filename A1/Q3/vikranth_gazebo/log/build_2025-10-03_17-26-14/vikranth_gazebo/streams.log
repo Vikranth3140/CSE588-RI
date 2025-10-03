@@ -1,0 +1,23 @@
+[0.818s] Invoking command in '/home/vikranth/turtlebot3_ws/src/vikranth_gazebo': PYTHONPATH=/home/vikranth/turtlebot3_ws/src/vikranth_gazebo/build/vikranth_gazebo/prefix_override:/usr/lib/python3/dist-packages/colcon_core/task/python/colcon_distutils_commands:/home/vikranth/turtlebot3_ws/src/vikranth_gazebo/install/vikranth_gazebo/lib/python3.10/site-packages:${PYTHONPATH} /usr/bin/python3 -W ignore:setup.py install is deprecated -W ignore:easy_install command is deprecated setup.py egg_info --egg-base build/vikranth_gazebo build --build-base /home/vikranth/turtlebot3_ws/src/vikranth_gazebo/build/vikranth_gazebo/build install --record /home/vikranth/turtlebot3_ws/src/vikranth_gazebo/build/vikranth_gazebo/install.log --single-version-externally-managed install_data
+[1.101s] running egg_info
+[1.102s] writing build/vikranth_gazebo/vikranth_gazebo.egg-info/PKG-INFO
+[1.102s] writing dependency_links to build/vikranth_gazebo/vikranth_gazebo.egg-info/dependency_links.txt
+[1.103s] writing entry points to build/vikranth_gazebo/vikranth_gazebo.egg-info/entry_points.txt
+[1.103s] writing requirements to build/vikranth_gazebo/vikranth_gazebo.egg-info/requires.txt
+[1.103s] writing top-level names to build/vikranth_gazebo/vikranth_gazebo.egg-info/top_level.txt
+[1.105s] reading manifest file 'build/vikranth_gazebo/vikranth_gazebo.egg-info/SOURCES.txt'
+[1.107s] writing manifest file 'build/vikranth_gazebo/vikranth_gazebo.egg-info/SOURCES.txt'
+[1.107s] running build
+[1.107s] running build_py
+[1.108s] running install
+[1.108s] running install_lib
+[1.110s] running install_data
+[1.110s] running install_egg_info
+[1.112s] removing '/home/vikranth/turtlebot3_ws/src/vikranth_gazebo/install/vikranth_gazebo/lib/python3.10/site-packages/vikranth_gazebo-0.0.0-py3.10.egg-info' (and everything under it)
+[1.113s] Copying build/vikranth_gazebo/vikranth_gazebo.egg-info to /home/vikranth/turtlebot3_ws/src/vikranth_gazebo/install/vikranth_gazebo/lib/python3.10/site-packages/vikranth_gazebo-0.0.0-py3.10.egg-info
+[1.114s] running install_scripts
+[1.136s] Installing hybrid_nav script to /home/vikranth/turtlebot3_ws/src/vikranth_gazebo/install/vikranth_gazebo/lib/vikranth_gazebo
+[1.136s] Installing reactive_nav script to /home/vikranth/turtlebot3_ws/src/vikranth_gazebo/install/vikranth_gazebo/lib/vikranth_gazebo
+[1.136s] Installing spa_nav script to /home/vikranth/turtlebot3_ws/src/vikranth_gazebo/install/vikranth_gazebo/lib/vikranth_gazebo
+[1.137s] writing list of installed files to '/home/vikranth/turtlebot3_ws/src/vikranth_gazebo/build/vikranth_gazebo/install.log'
+[1.162s] Invoked command in '/home/vikranth/turtlebot3_ws/src/vikranth_gazebo' returned '0': PYTHONPATH=/home/vikranth/turtlebot3_ws/src/vikranth_gazebo/build/vikranth_gazebo/prefix_override:/usr/lib/python3/dist-packages/colcon_core/task/python/colcon_distutils_commands:/home/vikranth/turtlebot3_ws/src/vikranth_gazebo/install/vikranth_gazebo/lib/python3.10/site-packages:${PYTHONPATH} /usr/bin/python3 -W ignore:setup.py install is deprecated -W ignore:easy_install command is deprecated setup.py egg_info --egg-base build/vikranth_gazebo build --build-base /home/vikranth/turtlebot3_ws/src/vikranth_gazebo/build/vikranth_gazebo/build install --record /home/vikranth/turtlebot3_ws/src/vikranth_gazebo/build/vikranth_gazebo/install.log --single-version-externally-managed install_data

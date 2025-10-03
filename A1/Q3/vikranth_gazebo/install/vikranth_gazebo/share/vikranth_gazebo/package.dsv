@@ -1,0 +1,6 @@
+source;share/vikranth_gazebo/hook/pythonpath.ps1
+source;share/vikranth_gazebo/hook/pythonpath.dsv
+source;share/vikranth_gazebo/hook/pythonpath.sh
+source;share/vikranth_gazebo/hook/ament_prefix_path.ps1
+source;share/vikranth_gazebo/hook/ament_prefix_path.dsv
+source;share/vikranth_gazebo/hook/ament_prefix_path.sh
