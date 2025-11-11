@@ -1,36 +1,10 @@
-# #!/usr/bin/env python3
-# """
-# AO* search on AND/OR graphs — from scratch, single file.
-
-# Features
-# - Deterministic AO* that chooses the current best partial-solution frontier tip and expands it.
-# - Supports OR edges (single child) and AND hyperedges (multiple children).
-# - Prints the evolving partial solution graph after each iteration with current cost estimates.
-# - Stops when the root is solved or no further improvement is possible.
-# - Includes a small, self-contained 4-node demo graph you can run directly.
-
-# Run:
-#     python ao_star.py
-
-# Output:
-#     Iteration-by-iteration partial solution with an inline note on why a non‑leaf
-#     node stopped expanding (annotation appears once convergence is reached).
-# """
-# from __future__ import annotations
 from dataclasses import dataclass, field
 from typing import List, Dict, Optional, Tuple, Iterable
 import math
 
-# ------------------------------
 # Graph structures
-# ------------------------------
 @dataclass
 class Hyperedge:
-    """A hyperedge from a parent to one or more children.
-
-    cost: fixed cost of choosing this decomposition (e.g., operator cost).
-    children: list of child node names (AND-set). Use len(children)==1 to model OR.
-    """
     cost: float
     children: List[str]
 
@@ -59,9 +33,8 @@ class AOStar:
                 # non-terminals start with admissible h(n) (or inf if no heuristic provided)
                 n.f = float(n.heuristic) if n.heuristic is not None else math.inf
 
-    # ---------- Utility ----------
+    # Utility
     def _edge_cost_estimate(self, edge: Hyperedge) -> float:
-        """Estimated cost if this edge is taken now: edge.cost + sum(f(children))."""
         return edge.cost + sum(self.nodes[c].f for c in edge.children)
 
     def _choose_best_edge(self, node: Node) -> Tuple[float, Optional[int]]:
@@ -74,9 +47,6 @@ class AOStar:
         return best_cost, best_idx
 
     def _mark_best_solution_subgraph(self) -> None:
-        """Mark best_edge_idx along the current best partial solution from root.
-        This is the classic AO* marking step.
-        """
         for n in self.nodes.values():
             n.best_edge_idx = None  # reset marks
         # DFS from root following currently best edges greedily
@@ -91,8 +61,6 @@ class AOStar:
         mark(self.root)
 
     def _select_frontier_tip(self) -> Optional[str]:
-        """Pick an unsolved node on the marked partial solution frontier to expand.
-        Strategy: deepest-first then lowest f (simple heuristic)."""
         # Collect frontier nodes along the marked solution subgraph
         frontier = []  # list of (depth, f, name)
         def dfs(nm: str, depth: int):
@@ -113,15 +81,7 @@ class AOStar:
         frontier.sort(key=lambda t: (-t[0], t[1], t[2]))
         return frontier[0][2]
 
-    def _expand(self, nm: str) -> None:
-        """Placeholder for expansion. In a typical planner, this would generate edges.
-        Here we assume the graph is fully given; expansion simply acknowledges visitation.
-        """
-        # For given graphs, there's no on-the-fly generation needed.
-        return
-
     def _backup(self) -> None:
-        """Perform dynamic programming backups until values stabilize w.r.t. best edges."""
         changed = True
         while changed:
             changed = False
@@ -144,7 +104,7 @@ class AOStar:
                         n.f = est
                 changed |= (n.f != old_f or n.best_edge_idx != old_best)
 
-    # ---------- Pretty printing ----------
+    # Pretty printing
     def _edge_to_str(self, n: Node, idx: int) -> str:
         e = n.edges[idx]
         kind = "AND" if len(e.children) > 1 else "OR"
@@ -174,7 +134,7 @@ class AOStar:
                     show(ch)
         show(self.root)
 
-    # ---------- Main loop ----------
+    # Main loop
     def run(self, max_iters: int = 100) -> None:
         for it in range(1, max_iters + 1):
             self._mark_best_solution_subgraph()
@@ -190,15 +150,11 @@ class AOStar:
                 self._annotate_non_leaf_stop()
                 return
             # Expand the chosen tip (graph is static here; no op) and backup
-            self._expand(tip)
             self._backup()
         print("Reached iteration limit.")
         self._annotate_non_leaf_stop()
 
     def _annotate_non_leaf_stop(self) -> None:
-        """Print one annotation explaining why expansion stopped on a non-leaf node.
-        We pick the highest node (closest to root) whose chosen best edge leads only to solved children.
-        """
         # Find a non-leaf node that is effectively closed because its chosen children are solved
         for nm in self._topdown_nodes():
             n = self.nodes[nm]
@@ -223,7 +179,6 @@ class AOStar:
                     return
 
     def _topdown_nodes(self) -> Iterable[str]:
-        """Yield nodes in a rough top-down order from root via marked edges, then others."""
         seen = set()
         order = []
         def dfs(nm: str):
@@ -242,24 +197,9 @@ class AOStar:
                 order.append(nm)
         return order
 
-# ------------------------------
-# Demo: 4-node example
-# ------------------------------
+# Demo: 4-node examplex
 
 def make_4node_example() -> Tuple[Dict[str, Node], str]:
-    """Construct a tiny AND/OR graph with 4 distinct nodes: S, A, B, C.
-
-    S has two decompositions:
-      e0: OR to A with cost 1
-      e1: AND to (B, C) with cost 2
-
-    B and C are terminal (solved) with exact costs 2 and 4.
-    A is non-terminal and can either finish immediately with fixed cost 6 (terminal edge),
-    or decompose to C with extra cost 1 (making A competitive if C is cheap).
-
-    Heuristics:
-      h(S)=0, h(A)=1 (admissible), others are terminals with exact costs.
-    """
     nodes: Dict[str, Node] = {
         "S": Node("S", heuristic=0.0),
         "A": Node("A", heuristic=1.0),
