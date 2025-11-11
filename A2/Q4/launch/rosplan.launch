@@ -1,0 +1,5 @@
+<launch>
+  <include file="$(find rosplan_planning_system)/launch/rosplan_planning_system.launch" />
+  <node pkg="rosplan_moveit" type="monitor_motion.py" name="motion_monitor" output="screen"/>
+  <node pkg="rosplan_moveit" type="replanner.py" name="replanner" output="screen"/>
+</launch>
