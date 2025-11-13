@@ -1,6 +1,6 @@
 import math
 
-# ---------- Core AO* Functions ----------
+# Core AO* Functions
 
 def cost_estimate(H, condition, weight=1):
     """Compute AND/OR cost combinations for a given node."""
@@ -118,7 +118,7 @@ def ao_star(start, Conditions, H, weight=1, max_iter=20):
             break
 
 
-# ---------- Example 4-node Case ----------
+# Example 4-node Case
 
 if __name__ == "__main__":
     # Initial heuristic or terminal costs
