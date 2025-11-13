@@ -1,8 +1,4 @@
 #!/usr/bin/env python3
-"""
-Experiment Runner for Hybrid Planning Evaluation
-Automates testing of different planning modes and collects metrics.
-"""
 import rospy
 import json
 import time
