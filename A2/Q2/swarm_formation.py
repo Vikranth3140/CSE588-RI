@@ -11,11 +11,15 @@ PERTURBATION_STEP = 500  # halfway point
 DEPOSIT_AMOUNT = 3.0
 FOOD_SOURCES = np.array([[20, 80], [80, 20], [50, 90]])  # (x, y)
 FOOD_RADIUS = 2.0
+NEST = np.array([50, 50])
+NEST_RADIUS = 3.0
+
 
 # Initialize
 pheromone = np.zeros((GRID_SIZE, GRID_SIZE))
-robots = np.random.rand(N_ROBOTS, 3)  # x, y, direction
+robots = np.random.rand(N_ROBOTS, 4) 
 robots[:, :2] *= GRID_SIZE
+robots[:, 3] = 0  # 0 = searching, 1 = returning
 
 plt.ion()
 fig, ax = plt.subplots(figsize=(6,6))
@@ -40,24 +44,55 @@ def sense_pheromone(x, y, angle, dist=2):
 def near_food(x, y):
     return np.any(np.linalg.norm(FOOD_SOURCES - np.array([x, y]), axis=1) < FOOD_RADIUS)
 
+def near_nest(x, y):
+    return np.linalg.norm(np.array([x, y]) - NEST) < NEST_RADIUS
+
+def turn_towards(x, y, angle, target, strength=0.2):
+    desired = np.arctan2(target[1]-y, target[0]-x)
+    diff = (desired - angle + np.pi) % (2*np.pi) - np.pi
+    return angle + strength * diff
+
 def move_robot(r):
-    x, y, angle = r
-    left, center, right = sense_pheromone(x, y, angle)
-    if left > right:
-        angle -= 0.3
-    elif right > left:
-        angle += 0.3
-    # Move forward
-    x += np.cos(angle)
-    y += np.sin(angle)
-    x, y = np.clip(x, 0, GRID_SIZE - 1), np.clip(y, 0, GRID_SIZE - 1)
-    
-    # If near food, deposit more pheromone
-    if near_food(x, y):
-        pheromone[int(y), int(x)] += DEPOSIT_AMOUNT * 4
-    else:
-        pheromone[int(y), int(x)] += DEPOSIT_AMOUNT
-    return np.array([x, y, angle])
+    x, y, angle, state = r
+
+    # Add random exploration noise
+    angle += np.random.normal(0, 0.1)
+
+    if state == 0:  # SEARCH MODE
+        left, center, right = sense_pheromone(x, y, angle)
+
+        # Biased turning
+        angle += 0.15 * (right - left)
+
+        # Move forward
+        x += np.cos(angle)
+        y += np.sin(angle)
+
+        # Switch to return mode if food found
+        if near_food(x, y):
+            state = 1  
+            pheromone[int(y), int(x)] += DEPOSIT_AMOUNT * 4  # strong deposit
+    else:  # RETURN MODE
+        angle = turn_towards(x, y, angle, NEST)
+
+        x += np.cos(angle)
+        y += np.sin(angle)
+
+        # Deposit STRONG pheromone to reinforce trail
+        pheromone[int(y), int(x)] += DEPOSIT_AMOUNT * 3
+
+        # Switch back to search mode
+        if near_nest(x, y):
+            pheromone[int(y), int(x)] += DEPOSIT_AMOUNT * 5  # nest reinforcement
+            state = 0
+
+    # Clip before deposit (avoids silent errors)
+    x, y = np.clip(x, 0, GRID_SIZE-1), np.clip(y, 0, GRID_SIZE-1)
+
+    # Always deposit a small baseline pheromone
+    pheromone[int(y), int(x)] += DEPOSIT_AMOUNT * 0.5
+
+    return np.array([x, y, angle, state])
 
 def decay_pheromone(rate):
     global pheromone
